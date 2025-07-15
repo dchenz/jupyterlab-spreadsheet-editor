@@ -11,6 +11,8 @@ import jspreadsheet from 'jspreadsheet-ce';
 import { Signal } from '@lumino/signaling';
 import { ICellCoordinates } from './searchprovider';
 
+const mobileScreenSize = 768;
+
 type columnTypeId =
   | 'autocomplete'
   | 'calendar'
@@ -59,7 +61,7 @@ export class SpreadsheetWidget extends Widget {
     this.title.closable = true;
     this.context = context;
     this.separator = ''; // Papa auto detect
-    this.fitMode = 'all-equal-default';
+    this.fitMode = 'all-equal-fit';
     if (context.localPath.endsWith('tsv')) {
       this.separator = '\t';
     }
@@ -231,11 +233,11 @@ export class SpreadsheetWidget extends Widget {
 
     this.populateColumnTypesBar();
 
-    // If the sheet is not too big, use the more user-friendly columns width adjustment model
-    if (data.length && data[0].length * data.length < 100 * 100) {
+    // More user-friendly for narrow screens.
+    if (window.innerWidth < mobileScreenSize) {
       this.fitMode = 'fit-cells';
-      this.relayout();
     }
+    this.relayout();
 
     // Resolve the ready promise.
     this._ready.resolve(undefined);
