@@ -10,6 +10,7 @@ import { Message } from '@lumino/messaging';
 import jspreadsheet from 'jspreadsheet-ce';
 import { Signal } from '@lumino/signaling';
 import { ICellCoordinates } from './searchprovider';
+import { registerAll } from './formula';
 
 const mobileScreenSize = 768;
 
@@ -56,6 +57,7 @@ export class SpreadsheetWidget extends Widget {
    */
   constructor(context: DocumentRegistry.CodeContext) {
     super();
+    registerAll();
     this.id = UUID.uuid4();
     this.title.label = PathExt.basename(context.localPath);
     this.title.closable = true;
